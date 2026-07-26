@@ -11,7 +11,7 @@ import type {
 } from '../core/types'
 import { AnalysisPanel } from './components/AnalysisPanel'
 import { MetaFields } from './components/MetaFields'
-import { ScoreBadge } from './components/ScoreBadge'
+import { ScoreBadge, ScoreLight } from './components/ScoreBadge'
 import { SeoAccordions } from './components/SeoAccordions'
 import { SnippetPreview } from './components/SnippetPreview'
 import { useTeemSEO } from './useTeemSEO'
@@ -123,7 +123,17 @@ export function TeemSEO({
           <strong className="teemseo-brand">TeemSEO</strong>
           <span className="teemseo-heading">{heading}</span>
         </div>
-        {result && <ScoreBadge rating={result.overallScore} locale={uiLocale} />}
+        {result && (
+          <div className="teemseo-header__scores">
+            <ScoreLight rating={result.seoScore} kind="seo" locale={uiLocale} />
+            <ScoreLight
+              rating={result.readabilityScore}
+              kind="readability"
+              locale={uiLocale}
+            />
+            <ScoreBadge rating={result.overallScore} locale={uiLocale} />
+          </div>
+        )}
       </header>
 
       {!analysisOnly && (
