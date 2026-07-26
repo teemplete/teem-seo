@@ -123,10 +123,45 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.teemseo-field__textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
 .teemseo-field input:focus,
 .teemseo-field textarea:focus {
   border-color: var(--teemseo-accent);
   box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+.teemseo-lengthbar {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--teemseo-line);
+  overflow: hidden;
+}
+
+.teemseo-lengthbar__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teemseo-muted);
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.teemseo-lengthbar--good .teemseo-lengthbar__fill {
+  background: #22c55e;
+}
+
+.teemseo-lengthbar--ok .teemseo-lengthbar__fill {
+  background: #f59e0b;
+}
+
+.teemseo-lengthbar--bad .teemseo-lengthbar__fill {
+  background: #ef4444;
 }
 
 .teemseo-snippet {
