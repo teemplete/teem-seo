@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import type {
   AnalysisResult,
   AnalyzeInput,
+  GetInternalLinkSuggestions,
   Locale,
   LocaleOption,
   MetaFieldsValue,
@@ -11,6 +12,7 @@ import type {
 import { AnalysisPanel } from './components/AnalysisPanel'
 import { MetaFields } from './components/MetaFields'
 import { ScoreBadge } from './components/ScoreBadge'
+import { SeoAccordions } from './components/SeoAccordions'
 import { SnippetPreview } from './components/SnippetPreview'
 import { useTeemSEO } from './useTeemSEO'
 
@@ -30,6 +32,14 @@ export interface TeemSEOProps {
   isKeyphraseUsedElsewhere?: AnalyzeInput['isKeyphraseUsedElsewhere']
   /** Hide editable fields and only show analysis + snippet */
   analysisOnly?: boolean
+  isCornerstone?: boolean
+  allowIndex?: boolean
+  allowFollow?: boolean
+  /**
+   * Host callback that returns related internal pages.
+   * Use `createInternalLinkSuggestionsFetcher(url)` to POST to an API.
+   */
+  getInternalLinkSuggestions?: GetInternalLinkSuggestions
 }
 
 export function TeemSEO({
@@ -46,22 +56,33 @@ export function TeemSEO({
   onAnalysis,
   isKeyphraseUsedElsewhere,
   analysisOnly = false,
+  isCornerstone,
+  allowIndex,
+  allowFollow,
+  getInternalLinkSuggestions,
 }: TeemSEOProps) {
   const [meta, setMeta] = useState<MetaFieldsValue>({
     focusKeyphrase,
     title,
     metaDescription,
     slug,
+    isCornerstone: isCornerstone ?? false,
+    allowIndex: allowIndex ?? true,
+    allowFollow: allowFollow ?? true,
   })
 
   useEffect(() => {
-    setMeta({
+    setMeta((prev) => ({
+      ...prev,
       focusKeyphrase,
       title,
       metaDescription,
       slug,
-    })
-  }, [focusKeyphrase, title, metaDescription, slug])
+      ...(isCornerstone !== undefined ? { isCornerstone } : {}),
+      ...(allowIndex !== undefined ? { allowIndex } : {}),
+      ...(allowFollow !== undefined ? { allowFollow } : {}),
+    }))
+  }, [focusKeyphrase, title, metaDescription, slug, isCornerstone, allowIndex, allowFollow])
 
   const { result, loading } = useTeemSEO({
     content,
@@ -118,6 +139,17 @@ export function TeemSEO({
       />
 
       <AnalysisPanel result={result} loading={loading} locale={uiLocale} />
+
+      {!analysisOnly && (
+        <SeoAccordions
+          content={content}
+          value={meta}
+          onChange={handleMeta}
+          locale={uiLocale}
+          siteUrl={siteUrl}
+          getInternalLinkSuggestions={getInternalLinkSuggestions}
+        />
+      )}
     </aside>
   )
 }

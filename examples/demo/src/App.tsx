@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { TeemSEO, type MetaFieldsValue } from 'teemseo'
 import 'teemseo/styles.css'
+import { mockGetInternalLinkSuggestions } from './mockInternalLinks'
 
 const EN_SAMPLE = `<h1>Complete guide to content SEO</h1>
 <p>Content SEO helps your pages rank in search. Content SEO starts with a clear focus keyphrase in the introduction of your article.</p>
@@ -31,6 +32,9 @@ export default function App() {
     metaDescription:
       'Learn content SEO with practical tactics for titles, meta descriptions, headings, links, and readable copy that ranks.',
     slug: 'content-seo-guide',
+    isCornerstone: false,
+    allowIndex: true,
+    allowFollow: true,
   })
 
   const switchLang = (next: 'en' | 'fa') => {
@@ -43,6 +47,9 @@ export default function App() {
         metaDescription:
           'با سئو محتوا رتبه بگیرید: عنوان، توضیحات متا، زیرعنوان، لینک‌سازی و نکات خوانایی متن فارسی را در این راهنما بیاموزید.',
         slug: 'seo-mohtava',
+        isCornerstone: false,
+        allowIndex: true,
+        allowFollow: true,
       })
     } else {
       setContent(EN_SAMPLE)
@@ -52,6 +59,9 @@ export default function App() {
         metaDescription:
           'Learn content SEO with practical tactics for titles, meta descriptions, headings, links, and readable copy that ranks.',
         slug: 'content-seo-guide',
+        isCornerstone: false,
+        allowIndex: true,
+        allowFollow: true,
       })
     }
   }
@@ -63,6 +73,8 @@ export default function App() {
         : 'Edit the content and watch Yoast-like analysis update live.',
     [lang],
   )
+
+  const getInternalLinkSuggestions = useCallback(mockGetInternalLinkSuggestions, [])
 
   return (
     <div className="demo" dir={lang === 'fa' ? 'rtl' : 'ltr'}>
@@ -93,9 +105,13 @@ export default function App() {
           title={meta.title}
           metaDescription={meta.metaDescription}
           slug={meta.slug}
+          isCornerstone={meta.isCornerstone}
+          allowIndex={meta.allowIndex}
+          allowFollow={meta.allowFollow}
           siteUrl="https://example.com"
           locale={lang}
           onChangeMeta={setMeta}
+          getInternalLinkSuggestions={getInternalLinkSuggestions}
         />
       </main>
     </div>

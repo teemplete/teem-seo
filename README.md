@@ -96,6 +96,81 @@ In a Server Component:
 />
 ```
 
+## Suggested internal links
+
+TeemSEO does not crawl your site. Pass `getInternalLinkSuggestions` so the host CMS/API ranks related pages and returns them for the accordion UI.
+
+**Query TeemSEO sends:**
+
+```ts
+{
+  focusKeyphrase: string
+  title: string
+  slug: string
+  prominentWords: string[] // top content words (stop words removed)
+  locale: 'en' | 'fa'
+  excludeUrls: string[]    // current page + internal links already in content
+  limit: number
+}
+```
+
+**Each suggestion you return:**
+
+```ts
+{
+  title: string
+  url: string
+  excerpt?: string
+  score?: number          // 0..1, optional sort hint
+  matchedTerms?: string[] // shown as chips in the UI
+}
+```
+
+### Callback (recommended)
+
+```tsx
+import { TeemSEO, type GetInternalLinkSuggestions } from 'teemseo'
+import 'teemseo/styles.css'
+
+const getInternalLinkSuggestions: GetInternalLinkSuggestions = async (query) => {
+  // Rank in your DB/search using keyphrase, prominentWords, title, cornerstone, etc.
+  // Suggested score weights: 3*keyphrase + 2*prominent + 1*titleTokens + 1*cornerstone
+  const res = await fetch('/api/internal-links', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(query),
+  })
+  const data = await res.json()
+  return data.suggestions // InternalLinkSuggestion[]
+}
+
+<TeemSEO
+  content={html}
+  siteUrl="https://example.com"
+  getInternalLinkSuggestions={getInternalLinkSuggestions}
+/>
+```
+
+### URL helper
+
+If your API accepts `POST` JSON and responds with `{ suggestions: [...] }`:
+
+```tsx
+import { TeemSEO, createInternalLinkSuggestionsFetcher } from 'teemseo'
+
+<TeemSEO
+  content={html}
+  siteUrl="https://example.com"
+  getInternalLinkSuggestions={createInternalLinkSuggestionsFetcher(
+    'https://example.com/api/internal-links',
+  )}
+/>
+```
+
+Without this prop, the accordion shows a short “provide getInternalLinkSuggestions” message.
+
+Requests run **only when the accordion is opened**. After a successful response for the current content/meta, reopen/close does not refetch. Editing content or keyphrase invalidates the cache so the next open fetches again.
+
 ## What it checks
 
 ### SEO
@@ -118,8 +193,8 @@ UI messages follow `messageLocale` (or detected content locale) in English or Pe
 
 | Import | Purpose |
 |--------|---------|
-| `teemseo` | `analyze`, `analyzeSync`, `TeemSEO`, `useTeemSEO`, types |
-| `teemseo/react` | React-only entry |
+| `teemseo` | `analyze`, `analyzeSync`, `TeemSEO`, `useTeemSEO`, `getProminentWords`, `buildInternalLinkQuery`, `createInternalLinkSuggestionsFetcher`, types |
+| `teemseo/react` | React-only entry (`TeemSEO`, `useInternalLinkSuggestions`, …) |
 | `teemseo/next` | `buildMetadata`, `buildJsonLd` |
 | `teemseo/styles.css` | Component styles |
 

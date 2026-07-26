@@ -14,6 +14,21 @@ describe('buildMetadata', () => {
     expect(meta.description).toBe('World')
     expect(meta.alternates?.canonical).toBe('https://example.com/hello')
     expect(meta.openGraph?.locale).toBe('en_US')
+    expect(meta.robots).toEqual({ index: true, follow: true })
+  })
+
+  it('respects allowIndex and allowFollow from meta', () => {
+    const meta = buildMetadata({
+      from: {
+        focusKeyphrase: 'x',
+        title: 't',
+        metaDescription: 'd',
+        slug: 's',
+        allowIndex: false,
+        allowFollow: false,
+      },
+    })
+    expect(meta.robots).toEqual({ index: false, follow: false })
   })
 })
 

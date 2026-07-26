@@ -4,6 +4,10 @@ export {
   parseContent,
   normalizeKeyphrase,
   slugifyKeyphrase,
+  getProminentWords,
+  buildInternalLinkQuery,
+  createInternalLinkSuggestionsFetcher,
+  filterExcludedSuggestions,
   detectLocale,
   resolveLocale,
   getLanguagePack,
@@ -17,10 +21,14 @@ export type {
   AnalyzeInput,
   AssessmentId,
   AssessmentResult,
+  GetInternalLinkSuggestions,
+  InternalLinkQuery,
+  InternalLinkSuggestion,
   Locale,
   LocaleOption,
   MetaFieldsValue,
   ParsedContent,
+  ProminentWord,
   Rating,
 } from './core'
 
@@ -29,3 +37,5 @@ export { TeemSEO } from './react/TeemSEO'
 export type { TeemSEOProps } from './react/TeemSEO'
 export { useTeemSEO } from './react/useTeemSEO'
 export type { UseTeemSEOOptions } from './react/useTeemSEO'
+export { useInternalLinkSuggestions } from './react/useInternalLinkSuggestions'
+export type { UseInternalLinkSuggestionsOptions } from './react/useInternalLinkSuggestions'

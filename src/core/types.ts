@@ -107,4 +107,36 @@ export interface MetaFieldsValue {
   title: string
   metaDescription: string
   slug: string
+  /** Mark this page as cornerstone content */
+  isCornerstone?: boolean
+  /** Allow search engines to show this content in results (default true) */
+  allowIndex?: boolean
+  /** Allow search engines to follow links in this content (default true) */
+  allowFollow?: boolean
 }
+
+/** Query TeemSEO sends to the host for internal link suggestions */
+export interface InternalLinkQuery {
+  focusKeyphrase: string
+  title: string
+  slug: string
+  prominentWords: string[]
+  locale: Locale
+  /** Current page URL + internal links already in the content */
+  excludeUrls: string[]
+  limit: number
+}
+
+/** One suggested internal page from the host CMS/API */
+export interface InternalLinkSuggestion {
+  title: string
+  url: string
+  excerpt?: string
+  /** Relevance 0..1 (optional; used for display sort) */
+  score?: number
+  matchedTerms?: string[]
+}
+
+export type GetInternalLinkSuggestions = (
+  query: InternalLinkQuery,
+) => InternalLinkSuggestion[] | Promise<InternalLinkSuggestion[]>

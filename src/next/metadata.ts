@@ -18,6 +18,11 @@ export interface BuildMetadataInput {
   }
   /** Prefer values from analysis meta / result */
   from?: Partial<MetaFieldsValue> | AnalysisResult
+  /** Override robots; defaults come from from.allowIndex / from.allowFollow */
+  robots?: {
+    index?: boolean
+    follow?: boolean
+  }
 }
 
 /**
@@ -39,10 +44,17 @@ export function buildMetadata(input: BuildMetadataInput) {
       ? `${input.siteUrl.replace(/\/$/, '')}/${slug.replace(/^\//, '')}`
       : undefined)
 
+  const index = input.robots?.index ?? fromMeta?.allowIndex ?? true
+  const follow = input.robots?.follow ?? fromMeta?.allowFollow ?? true
+
   return {
     title: title || undefined,
     description: description || undefined,
     alternates: canonical ? { canonical } : undefined,
+    robots: {
+      index,
+      follow,
+    },
     openGraph: {
       title: title || undefined,
       description: description || undefined,
