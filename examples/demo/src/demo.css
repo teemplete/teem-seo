@@ -1,0 +1,100 @@
+:root {
+  color: #1c1917;
+  font-family: "IBM Plex Sans", "Vazirmatn", sans-serif;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(15, 118, 110, 0.16), transparent 50%),
+    radial-gradient(700px 400px at 100% 0%, rgba(120, 113, 108, 0.12), transparent 45%),
+    linear-gradient(180deg, #fbfaf7, #f3f0ea);
+  min-height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.demo {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+.demo-hero {
+  margin-bottom: 24px;
+}
+
+.demo-brand {
+  margin: 0 0 6px;
+  color: #0f766e;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 28px;
+}
+
+.demo-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.03em;
+}
+
+.demo-hero p {
+  margin: 0;
+  color: #57534e;
+  max-width: 40rem;
+}
+
+.demo-lang {
+  display: inline-flex;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.demo-lang button {
+  border: 1px solid #d6d3d1;
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.demo-lang button.is-active {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #fff;
+}
+
+.demo-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 18px;
+  align-items: start;
+}
+
+.demo-editor label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #57534e;
+}
+
+.demo-editor textarea {
+  width: 100%;
+  border: 1px solid #e7e5e4;
+  border-radius: 12px;
+  padding: 14px;
+  font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: #fff;
+  min-height: 520px;
+  resize: vertical;
+}
+
+@media (max-width: 900px) {
+  .demo-layout {
+    grid-template-columns: 1fr;
+  }
+}

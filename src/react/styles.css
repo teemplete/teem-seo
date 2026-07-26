@@ -1,0 +1,337 @@
+.teemseo {
+  --teemseo-bg: #f7f5f1;
+  --teemseo-surface: #ffffff;
+  --teemseo-ink: #1c1917;
+  --teemseo-muted: #78716c;
+  --teemseo-line: #e7e5e4;
+  --teemseo-accent: #0f766e;
+  --teemseo-good: #15803d;
+  --teemseo-ok: #ca8a04;
+  --teemseo-bad: #dc2626;
+  --teemseo-snippet-title: #1a0dab;
+  --teemseo-snippet-url: #006621;
+  --teemseo-snippet-desc: #4d5156;
+  --teemseo-radius: 10px;
+  --teemseo-font: "IBM Plex Sans", "Vazirmatn", "Segoe UI", sans-serif;
+  --teemseo-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  box-sizing: border-box;
+  color: var(--teemseo-ink);
+  background:
+    radial-gradient(1200px 400px at 0% 0%, rgba(15, 118, 110, 0.08), transparent 55%),
+    linear-gradient(180deg, #fbfaf7 0%, var(--teemseo-bg) 100%);
+  border: 1px solid var(--teemseo-line);
+  border-radius: calc(var(--teemseo-radius) + 2px);
+  padding: 14px;
+  font-family: var(--teemseo-font);
+  font-size: 13px;
+  line-height: 1.45;
+  max-width: 420px;
+  width: 100%;
+}
+
+.teemseo *,
+.teemseo *::before,
+.teemseo *::after {
+  box-sizing: border-box;
+}
+
+.teemseo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.teemseo-brand {
+  display: block;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  color: var(--teemseo-accent);
+}
+
+.teemseo-heading {
+  display: block;
+  color: var(--teemseo-muted);
+  font-size: 12px;
+}
+
+.teemseo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--teemseo-surface);
+  border: 1px solid var(--teemseo-line);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.teemseo-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teemseo-muted);
+}
+
+.teemseo-badge--good .teemseo-badge__dot { background: var(--teemseo-good); }
+.teemseo-badge--ok .teemseo-badge__dot { background: var(--teemseo-ok); }
+.teemseo-badge--bad .teemseo-badge__dot { background: var(--teemseo-bad); }
+.teemseo-badge--good { color: var(--teemseo-good); }
+.teemseo-badge--ok { color: #a16207; }
+.teemseo-badge--bad { color: var(--teemseo-bad); }
+
+.teemseo-fields {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.teemseo-field {
+  display: grid;
+  gap: 4px;
+}
+
+.teemseo-field > span {
+  display: flex;
+  justify-content: space-between;
+  color: var(--teemseo-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.teemseo-field em {
+  font-style: normal;
+  font-weight: 500;
+  font-family: var(--teemseo-mono);
+  font-size: 10px;
+}
+
+.teemseo-field input,
+.teemseo-field textarea {
+  width: 100%;
+  border: 1px solid var(--teemseo-line);
+  background: var(--teemseo-surface);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--teemseo-ink);
+  font: inherit;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.teemseo-field input:focus,
+.teemseo-field textarea:focus {
+  border-color: var(--teemseo-accent);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+.teemseo-snippet {
+  margin-bottom: 12px;
+  background: var(--teemseo-surface);
+  border: 1px solid var(--teemseo-line);
+  border-radius: var(--teemseo-radius);
+  overflow: hidden;
+}
+
+.teemseo-snippet__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--teemseo-line);
+  color: var(--teemseo-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.teemseo-snippet__modes {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.teemseo-snippet__modes button,
+.teemseo-tabs button {
+  border: 0;
+  background: transparent;
+  color: var(--teemseo-muted);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.teemseo-snippet__modes button.is-active,
+.teemseo-tabs button.is-active {
+  background: rgba(15, 118, 110, 0.1);
+  color: var(--teemseo-accent);
+}
+
+.teemseo-snippet__card {
+  padding: 12px;
+}
+
+.teemseo-snippet__card--mobile {
+  max-width: 320px;
+}
+
+.teemseo-snippet__url {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.teemseo-snippet__favicon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #94a3b8, #cbd5e1);
+  flex: 0 0 auto;
+}
+
+.teemseo-snippet__url strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #202124;
+}
+
+.teemseo-snippet__url span {
+  display: block;
+  font-size: 11px;
+  color: var(--teemseo-snippet-url);
+}
+
+.teemseo-snippet__title {
+  display: block;
+  color: var(--teemseo-snippet-title);
+  font-size: 18px;
+  line-height: 1.3;
+  text-decoration: none;
+  margin: 2px 0 4px;
+}
+
+.teemseo-snippet__desc {
+  margin: 0;
+  color: var(--teemseo-snippet-desc);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.teemseo-analysis {
+  background: var(--teemseo-surface);
+  border: 1px solid var(--teemseo-line);
+  border-radius: var(--teemseo-radius);
+  padding: 10px;
+}
+
+.teemseo-analysis__scores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.teemseo-analysis__scores > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #fafaf9;
+  border: 1px solid var(--teemseo-line);
+}
+
+.teemseo-analysis__scores small {
+  color: var(--teemseo-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.teemseo-stats {
+  display: flex;
+  justify-content: space-between;
+  color: var(--teemseo-muted);
+  font-size: 11px;
+  margin-bottom: 8px;
+  font-family: var(--teemseo-mono);
+}
+
+.teemseo-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.teemseo-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--teemseo-line);
+}
+
+.teemseo-tabs button .teemseo-badge {
+  padding: 1px 6px;
+}
+
+.teemseo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.teemseo-list__item {
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  gap: 8px;
+  align-items: start;
+  padding: 8px;
+  border-radius: 8px;
+  background: #fafaf9;
+  border: 1px solid var(--teemseo-line);
+}
+
+.teemseo-list__bullet {
+  width: 8px;
+  height: 8px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: var(--teemseo-muted);
+}
+
+.teemseo-list__item--good .teemseo-list__bullet { background: var(--teemseo-good); }
+.teemseo-list__item--ok .teemseo-list__bullet { background: var(--teemseo-ok); }
+.teemseo-list__item--bad .teemseo-list__bullet { background: var(--teemseo-bad); }
+
+.teemseo-empty {
+  margin: 8px 0;
+  color: var(--teemseo-muted);
+  text-align: center;
+}
+
+@keyframes teemseo-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.teemseo-list__item,
+.teemseo-snippet__card,
+.teemseo-header {
+  animation: teemseo-fade-in 0.25s ease both;
+}

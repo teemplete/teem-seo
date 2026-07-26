@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+*.tsbuildinfo
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Demo local
+examples/demo/node_modules/
+examples/demo/dist/
+examples/demo/package-lock.json
