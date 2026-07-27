@@ -18,6 +18,8 @@ export {
   fleschReadingEase,
 } from './core'
 
+export { TEEMSEO_VERSION } from './version'
+
 export type {
   AnalysisResult,
   AnalyzeInput,

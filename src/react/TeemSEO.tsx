@@ -15,6 +15,7 @@ import { ScoreBadge, ScoreLight } from './components/ScoreBadge'
 import { SeoAccordions } from './components/SeoAccordions'
 import { SnippetPreview } from './components/SnippetPreview'
 import { useTeemSEO } from './useTeemSEO'
+import { TEEMSEO_VERSION } from '../version'
 
 export interface TeemSEOProps {
   /** HTML or plain-text content to analyze */
@@ -224,7 +225,7 @@ export function TeemSEO({
           target="_blank"
           rel="noopener noreferrer"
         >
-          powered by TeemSEO v.0.2.3
+          powered by TeemSEO v{TEEMSEO_VERSION}
         </a>
       </footer>
     </aside>
