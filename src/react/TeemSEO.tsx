@@ -217,6 +217,16 @@ export function TeemSEO({
           getInternalLinkSuggestions={getInternalLinkSuggestions}
         />
       )}
+
+      <footer className="teemseo-powered">
+        <a
+          href="https://www.npmjs.com/package/teem-seo"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          powered by TeemSEO v.0.2.3
+        </a>
+      </footer>
     </aside>
   )
 }

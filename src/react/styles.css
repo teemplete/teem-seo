@@ -769,3 +769,22 @@
   padding: 2px 6px;
   border-radius: 4px;
 }
+
+.teemseo-powered {
+  margin-top: 4px;
+  text-align: center;
+}
+
+.teemseo-powered a {
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--teemseo-muted);
+  text-decoration: none;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.teemseo-powered a:hover {
+  opacity: 0.9;
+  color: var(--teemseo-accent);
+}
