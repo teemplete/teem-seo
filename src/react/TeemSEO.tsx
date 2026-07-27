@@ -54,6 +54,16 @@ export interface TeemSEOProps {
   allowIndex?: boolean
   /** Allow search engines to follow links (default `true`) */
   allowFollow?: boolean
+  /** Explicit canonical URL */
+  canonicalUrl?: string
+  /** Title used in breadcrumb trails */
+  breadcrumbTitle?: string
+  /** Meta robots: noimageindex */
+  noImageIndex?: boolean
+  /** Meta robots: noarchive */
+  noArchive?: boolean
+  /** Meta robots: nosnippet */
+  noSnippet?: boolean
   /**
    * Host callback that returns related internal pages for the suggestions accordion.
    * Use `createInternalLinkSuggestionsFetcher(url)` to POST to an API.
@@ -78,6 +88,11 @@ export function TeemSEO({
   isCornerstone,
   allowIndex,
   allowFollow,
+  canonicalUrl,
+  breadcrumbTitle,
+  noImageIndex,
+  noArchive,
+  noSnippet,
   getInternalLinkSuggestions,
 }: TeemSEOProps) {
   const [meta, setMeta] = useState<MetaFieldsValue>({
@@ -88,6 +103,11 @@ export function TeemSEO({
     isCornerstone: isCornerstone ?? false,
     allowIndex: allowIndex ?? true,
     allowFollow: allowFollow ?? true,
+    canonicalUrl: canonicalUrl ?? '',
+    breadcrumbTitle: breadcrumbTitle ?? '',
+    noImageIndex: noImageIndex ?? false,
+    noArchive: noArchive ?? false,
+    noSnippet: noSnippet ?? false,
   })
 
   useEffect(() => {
@@ -100,8 +120,26 @@ export function TeemSEO({
       ...(isCornerstone !== undefined ? { isCornerstone } : {}),
       ...(allowIndex !== undefined ? { allowIndex } : {}),
       ...(allowFollow !== undefined ? { allowFollow } : {}),
+      ...(canonicalUrl !== undefined ? { canonicalUrl } : {}),
+      ...(breadcrumbTitle !== undefined ? { breadcrumbTitle } : {}),
+      ...(noImageIndex !== undefined ? { noImageIndex } : {}),
+      ...(noArchive !== undefined ? { noArchive } : {}),
+      ...(noSnippet !== undefined ? { noSnippet } : {}),
     }))
-  }, [focusKeyphrase, title, metaDescription, slug, isCornerstone, allowIndex, allowFollow])
+  }, [
+    focusKeyphrase,
+    title,
+    metaDescription,
+    slug,
+    isCornerstone,
+    allowIndex,
+    allowFollow,
+    canonicalUrl,
+    breadcrumbTitle,
+    noImageIndex,
+    noArchive,
+    noSnippet,
+  ])
 
   const { result, loading } = useTeemSEO({
     content,

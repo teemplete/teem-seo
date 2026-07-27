@@ -1,4 +1,11 @@
 import { defineConfig } from 'tsup'
+import { execSync } from 'node:child_process'
+
+const copyStyles = {
+  onSuccess: async () => {
+    execSync('node scripts/copy-styles.mjs', { stdio: 'inherit' })
+  },
+}
 
 export default defineConfig([
   {
@@ -25,5 +32,6 @@ export default defineConfig([
     clean: false,
     external: ['react', 'react-dom', 'react/jsx-runtime', 'next'],
     treeshake: true,
+    ...copyStyles,
   },
 ])

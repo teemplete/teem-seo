@@ -44,7 +44,7 @@
     "**/*.css"
   ],
   "scripts": {
-    "build": "tsup && cp src/react/styles.css dist/styles.css && node scripts/add-use-client.mjs",
+    "build": "tsup && node scripts/copy-styles.mjs && node scripts/add-use-client.mjs",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",

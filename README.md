@@ -140,7 +140,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     slug: post.slug,
     siteUrl: 'https://example.com',
     locale: 'fa',
-    from: post, // can include allowIndex / allowFollow
+    from: post, // can include allowIndex / allowFollow / canonicalUrl / robots flags
   })
 }
 
@@ -400,6 +400,11 @@ UI messages follow `messageLocale` (or detected content locale). RTL is applied 
 | `isCornerstone` | `boolean` | `false` | Mark page as cornerstone content. |
 | `allowIndex` | `boolean` | `true` | Allow search engines to index this page. |
 | `allowFollow` | `boolean` | `true` | Allow search engines to follow links. |
+| `canonicalUrl` | `string` | `''` | Explicit canonical URL (Advanced accordion). |
+| `breadcrumbTitle` | `string` | `''` | Title used in breadcrumb trails. |
+| `noImageIndex` | `boolean` | `false` | Meta robots `noimageindex`. |
+| `noArchive` | `boolean` | `false` | Meta robots `noarchive`. |
+| `noSnippet` | `boolean` | `false` | Meta robots `nosnippet`. |
 | `onChangeMeta` | `(value: MetaFieldsValue) => void` | — | Fires when editable meta fields change. |
 | `onAnalysis` | `(result: AnalysisResult) => void` | — | Fires whenever a new analysis result is ready. |
 | `isKeyphraseUsedElsewhere` | `(keyphrase: string) => boolean \| Promise<boolean>` | — | Return `true` if the keyphrase is already used on another page. |
@@ -416,6 +421,11 @@ UI messages follow `messageLocale` (or detected content locale). RTL is applied 
   isCornerstone?: boolean
   allowIndex?: boolean
   allowFollow?: boolean
+  canonicalUrl?: string
+  breadcrumbTitle?: string
+  noImageIndex?: boolean
+  noArchive?: boolean
+  noSnippet?: boolean
 }
 ```
 
@@ -471,8 +481,8 @@ Returns `{ result: AnalysisResult | null, loading: boolean }`.
 | `locale` | `'en' \| 'fa'` | Sets Open Graph locale (`en_US` / `fa_IR`). |
 | `openGraph` | `{ type?, images? }` | Open Graph extras. |
 | `twitter` | `{ card?, site?, creator? }` | Twitter card extras. |
-| `from` | `Partial<MetaFieldsValue> \| AnalysisResult` | Prefill title/description/slug/robots from editor state or analysis. |
-| `robots` | `{ index?, follow? }` | Robots overrides (defaults from `from.allowIndex` / `from.allowFollow`). |
+| `from` | `Partial<MetaFieldsValue> \| AnalysisResult` | Prefill title/description/slug/robots/canonical from editor state or analysis. |
+| `robots` | `{ index?, follow?, noimageindex?, noarchive?, nosnippet? }` | Robots overrides (defaults from `from.allowIndex` / `from.allowFollow` / advanced flags). |
 
 ### `buildJsonLd` / `jsonLdScriptContent` (`teemseo/next`)
 

@@ -30,6 +30,29 @@ describe('buildMetadata', () => {
     })
     expect(meta.robots).toEqual({ index: false, follow: false })
   })
+
+  it('uses canonicalUrl and advanced robots flags from meta', () => {
+    const meta = buildMetadata({
+      from: {
+        focusKeyphrase: 'x',
+        title: 't',
+        metaDescription: 'd',
+        slug: 's',
+        canonicalUrl: 'https://example.com/canonical-page',
+        noImageIndex: true,
+        noArchive: true,
+        noSnippet: true,
+      },
+    })
+    expect(meta.alternates?.canonical).toBe('https://example.com/canonical-page')
+    expect(meta.robots).toEqual({
+      index: true,
+      follow: true,
+      noimageindex: true,
+      noarchive: true,
+      nosnippet: true,
+    })
+  })
 })
 
 describe('buildJsonLd', () => {

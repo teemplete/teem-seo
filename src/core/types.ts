@@ -117,6 +117,16 @@ export interface MetaFieldsValue {
   allowIndex?: boolean
   /** Allow search engines to follow links in this content (default true) */
   allowFollow?: boolean
+  /** Explicit canonical URL (overrides siteUrl + slug when set) */
+  canonicalUrl?: string
+  /** Title used in breadcrumb trails (schema / UI) */
+  breadcrumbTitle?: string
+  /** Meta robots: noimageindex */
+  noImageIndex?: boolean
+  /** Meta robots: noarchive */
+  noArchive?: boolean
+  /** Meta robots: nosnippet */
+  noSnippet?: boolean
 }
 
 /** Query TeemSEO sends to the host for internal link suggestions */

@@ -536,6 +536,20 @@
   line-height: 1.45;
 }
 
+.teemseo-advanced__robots {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+
+.teemseo-advanced__robots legend {
+  padding: 0;
+  margin-bottom: 2px;
+}
+
 .teemseo-yesno {
   display: inline-flex;
   gap: 4px;

@@ -18,10 +18,13 @@ export interface BuildMetadataInput {
   }
   /** Prefer values from analysis meta / result */
   from?: Partial<MetaFieldsValue> | AnalysisResult
-  /** Override robots; defaults come from from.allowIndex / from.allowFollow */
+  /** Override robots; defaults come from from.allowIndex / from.allowFollow / advanced flags */
   robots?: {
     index?: boolean
     follow?: boolean
+    noimageindex?: boolean
+    noarchive?: boolean
+    nosnippet?: boolean
   }
 }
 
@@ -40,12 +43,16 @@ export function buildMetadata(input: BuildMetadataInput) {
   const slug = input.slug ?? fromMeta?.slug ?? ''
   const canonical =
     input.canonical ??
+    (fromMeta?.canonicalUrl?.trim() || undefined) ??
     (input.siteUrl && slug
       ? `${input.siteUrl.replace(/\/$/, '')}/${slug.replace(/^\//, '')}`
       : undefined)
 
   const index = input.robots?.index ?? fromMeta?.allowIndex ?? true
   const follow = input.robots?.follow ?? fromMeta?.allowFollow ?? true
+  const noimageindex = input.robots?.noimageindex ?? fromMeta?.noImageIndex ?? false
+  const noarchive = input.robots?.noarchive ?? fromMeta?.noArchive ?? false
+  const nosnippet = input.robots?.nosnippet ?? fromMeta?.noSnippet ?? false
 
   return {
     title: title || undefined,
@@ -54,6 +61,9 @@ export function buildMetadata(input: BuildMetadataInput) {
     robots: {
       index,
       follow,
+      ...(noimageindex ? { noimageindex: true } : {}),
+      ...(noarchive ? { noarchive: true } : {}),
+      ...(nosnippet ? { nosnippet: true } : {}),
     },
     openGraph: {
       title: title || undefined,

@@ -35,6 +35,11 @@ export default function App() {
     isCornerstone: false,
     allowIndex: true,
     allowFollow: true,
+    canonicalUrl: '',
+    breadcrumbTitle: '',
+    noImageIndex: false,
+    noArchive: false,
+    noSnippet: false,
   })
 
   const switchLang = (next: 'en' | 'fa') => {
@@ -50,6 +55,11 @@ export default function App() {
         isCornerstone: false,
         allowIndex: true,
         allowFollow: true,
+        canonicalUrl: '',
+        breadcrumbTitle: '',
+        noImageIndex: false,
+        noArchive: false,
+        noSnippet: false,
       })
     } else {
       setContent(EN_SAMPLE)
@@ -62,6 +72,11 @@ export default function App() {
         isCornerstone: false,
         allowIndex: true,
         allowFollow: true,
+        canonicalUrl: '',
+        breadcrumbTitle: '',
+        noImageIndex: false,
+        noArchive: false,
+        noSnippet: false,
       })
     }
   }
@@ -108,6 +123,11 @@ export default function App() {
           isCornerstone={meta.isCornerstone}
           allowIndex={meta.allowIndex}
           allowFollow={meta.allowFollow}
+          canonicalUrl={meta.canonicalUrl}
+          breadcrumbTitle={meta.breadcrumbTitle}
+          noImageIndex={meta.noImageIndex}
+          noArchive={meta.noArchive}
+          noSnippet={meta.noSnippet}
           siteUrl="https://example.com"
           locale={lang}
           onChangeMeta={setMeta}

@@ -30,6 +30,12 @@ const LABELS = {
     advanced: 'Advanced',
     allowIndex: 'Allow search engines to show this content in search results?',
     allowFollow: 'Should search engines follow links in this content?',
+    canonicalUrl: 'Canonical URL',
+    breadcrumbTitle: 'Breadcrumbs title',
+    robotsAdvanced: 'Meta robots advanced',
+    noImageIndex: 'No Image Index',
+    noArchive: 'No Archive',
+    noSnippet: 'No Snippet',
     yes: 'Yes',
     no: 'No',
     insights: 'Insights',
@@ -56,6 +62,12 @@ const LABELS = {
     advanced: 'پیشرفته',
     allowIndex: 'به موتورهای جستجو اجازه نمایش این محتوا در نتایج جستجو را می‌دهید؟',
     allowFollow: 'موتورهای جستجو باید لینک‌های موجود در این محتوا را دنبال کنند؟',
+    canonicalUrl: 'آدرس کنونیکال (Canonical URL)',
+    breadcrumbTitle: 'عنوان مسیر راهنما (Breadcrumbs)',
+    robotsAdvanced: 'متا ربات‌های پیشرفته',
+    noImageIndex: 'بدون ایندکس تصویر (No Image Index)',
+    noArchive: 'بدون آرشیو (No Archive)',
+    noSnippet: 'بدون اسنیپت (No Snippet)',
     yes: 'بله',
     no: 'خیر',
     insights: 'بینش',
@@ -294,6 +306,9 @@ export function SeoAccordions({
   const isCornerstone = value.isCornerstone ?? false
   const allowIndex = value.allowIndex ?? true
   const allowFollow = value.allowFollow ?? true
+  const noImageIndex = value.noImageIndex ?? false
+  const noArchive = value.noArchive ?? false
+  const noSnippet = value.noSnippet ?? false
   const [linksOpen, setLinksOpen] = useState(false)
 
   const set = (patch: Partial<MetaFieldsValue>) => onChange({ ...value, ...patch })
@@ -372,6 +387,56 @@ export function SeoAccordions({
               onChange={(next) => set({ allowFollow: next })}
             />
           </div>
+          <label className="teemseo-field">
+            <span>{t.canonicalUrl}</span>
+            <input
+              type="url"
+              value={value.canonicalUrl ?? ''}
+              readOnly={readOnly}
+              dir="ltr"
+              placeholder="https://"
+              onChange={(e) => set({ canonicalUrl: e.target.value })}
+            />
+          </label>
+          <label className="teemseo-field">
+            <span>{t.breadcrumbTitle}</span>
+            <input
+              type="text"
+              value={value.breadcrumbTitle ?? ''}
+              readOnly={readOnly}
+              onChange={(e) => set({ breadcrumbTitle: e.target.value })}
+            />
+          </label>
+          <fieldset className="teemseo-advanced__robots">
+            <legend className="teemseo-advanced__label">{t.robotsAdvanced}</legend>
+            <label className="teemseo-check">
+              <input
+                type="checkbox"
+                checked={noImageIndex}
+                disabled={readOnly}
+                onChange={(e) => set({ noImageIndex: e.target.checked })}
+              />
+              <span>{t.noImageIndex}</span>
+            </label>
+            <label className="teemseo-check">
+              <input
+                type="checkbox"
+                checked={noArchive}
+                disabled={readOnly}
+                onChange={(e) => set({ noArchive: e.target.checked })}
+              />
+              <span>{t.noArchive}</span>
+            </label>
+            <label className="teemseo-check">
+              <input
+                type="checkbox"
+                checked={noSnippet}
+                disabled={readOnly}
+                onChange={(e) => set({ noSnippet: e.target.checked })}
+              />
+              <span>{t.noSnippet}</span>
+            </label>
+          </fieldset>
         </div>
       </Accordion>
 
