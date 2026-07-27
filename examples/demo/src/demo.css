@@ -74,6 +74,12 @@ body {
   align-items: start;
 }
 
+.demo-editor-col {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
 .demo-editor label {
   display: grid;
   gap: 8px;
@@ -89,8 +95,70 @@ body {
   padding: 14px;
   font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
   background: #fff;
-  min-height: 520px;
+  min-height: 420px;
   resize: vertical;
+}
+
+.demo-output {
+  border: 1px solid #e7e5e4;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.demo-output__header {
+  padding: 14px 14px 0;
+}
+
+.demo-output__header h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #57534e;
+}
+
+.demo-output__header p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #78716c;
+  font-weight: 400;
+}
+
+.demo-output__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f5f5f4;
+}
+
+.demo-output__tabs button {
+  border: 1px solid #e7e5e4;
+  background: #fafaf9;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #57534e;
+}
+
+.demo-output__tabs button.is-active {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #fff;
+}
+
+.demo-output__code {
+  margin: 0;
+  padding: 14px;
+  max-height: 320px;
+  overflow: auto;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #1c1917;
+  background: #fafaf9;
+  white-space: pre;
+  direction: ltr;
+  text-align: left;
 }
 
 @media (max-width: 900px) {
