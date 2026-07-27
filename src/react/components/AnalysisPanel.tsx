@@ -1,14 +1,31 @@
 'use client'
 
 import { useState } from 'react'
-import type { AnalysisResult, AssessmentResult, Rating } from '../../core/types'
+import type {
+  AnalysisResult,
+  AssessmentResult,
+  Locale,
+  MetaFieldsValue,
+  Rating,
+  UploadSocialImage,
+} from '../../core/types'
+import { SchemaPanel } from './SchemaPanel'
 import { ScoreBadge } from './ScoreBadge'
+import { SocialPanel } from './SocialPanel'
 
 export interface AnalysisPanelProps {
   result: AnalysisResult | null
   loading?: boolean
-  locale?: 'en' | 'fa'
+  locale?: Locale
+  value?: MetaFieldsValue
+  onChangeMeta?: (value: MetaFieldsValue) => void
+  siteUrl?: string
+  readOnly?: boolean
+  onUploadSocialImage?: UploadSocialImage
 }
+
+type MainTab = 'analysis' | 'schema' | 'social'
+type AnalysisSubTab = 'seo' | 'readability'
 
 function groupByRating(items: AssessmentResult[]): Record<Rating, AssessmentResult[]> {
   return {
@@ -36,11 +53,24 @@ function AssessmentList({ items, empty }: { items: AssessmentResult[]; empty: st
   )
 }
 
-export function AnalysisPanel({ result, loading, locale = 'en' }: AnalysisPanelProps) {
-  const [tab, setTab] = useState<'seo' | 'readability'>('seo')
+export function AnalysisPanel({
+  result,
+  loading,
+  locale = 'en',
+  value,
+  onChangeMeta,
+  siteUrl,
+  readOnly,
+  onUploadSocialImage,
+}: AnalysisPanelProps) {
+  const [mainTab, setMainTab] = useState<MainTab>('analysis')
+  const [subTab, setSubTab] = useState<AnalysisSubTab>('seo')
   const t =
     locale === 'fa'
       ? {
+          analysis: 'آنالیز',
+          schema: 'طرح Schema',
+          social: 'شبکه‌های اجتماعی',
           seo: 'سئو',
           readability: 'خوانایی',
           empty: 'هنوز آنالیزی موجود نیست.',
@@ -49,6 +79,9 @@ export function AnalysisPanel({ result, loading, locale = 'en' }: AnalysisPanelP
           density: 'چگالی',
         }
       : {
+          analysis: 'Analysis',
+          schema: 'Schema',
+          social: 'Social',
           seo: 'SEO',
           readability: 'Readability',
           empty: 'No analysis yet.',
@@ -57,66 +90,127 @@ export function AnalysisPanel({ result, loading, locale = 'en' }: AnalysisPanelP
           density: 'density',
         }
 
+  const editable = Boolean(value && onChangeMeta)
+
   return (
     <div className="teemseo-analysis">
-      <div className="teemseo-analysis__scores">
-        <div>
-          <small>{t.seo}</small>
-          {result ? <ScoreBadge rating={result.seoScore} locale={locale} /> : <span>—</span>}
-        </div>
-        <div>
-          <small>{t.readability}</small>
-          {result ? (
-            <ScoreBadge rating={result.readabilityScore} locale={locale} />
-          ) : (
-            <span>—</span>
+      <div className="teemseo-tabs teemseo-tabs--main" role="tablist" aria-label={t.analysis}>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mainTab === 'analysis'}
+          className={mainTab === 'analysis' ? 'is-active' : ''}
+          onClick={() => setMainTab('analysis')}
+        >
+          {t.analysis}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mainTab === 'schema'}
+          className={mainTab === 'schema' ? 'is-active' : ''}
+          onClick={() => setMainTab('schema')}
+        >
+          {t.schema}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mainTab === 'social'}
+          className={mainTab === 'social' ? 'is-active' : ''}
+          onClick={() => setMainTab('social')}
+        >
+          {t.social}
+        </button>
+      </div>
+
+      {mainTab === 'analysis' ? (
+        <div className="teemseo-tabpanel" role="tabpanel">
+          <div className="teemseo-analysis__scores">
+            <div>
+              <small>{t.seo}</small>
+              {result ? <ScoreBadge rating={result.seoScore} locale={locale} /> : <span>—</span>}
+            </div>
+            <div>
+              <small>{t.readability}</small>
+              {result ? (
+                <ScoreBadge rating={result.readabilityScore} locale={locale} />
+              ) : (
+                <span>—</span>
+              )}
+            </div>
+          </div>
+
+          {result && (
+            <div className="teemseo-stats">
+              <span>
+                {result.stats.wordCount} {t.words}
+              </span>
+              <span>
+                {t.density}: {result.stats.keyphraseDensity}%
+              </span>
+            </div>
           )}
+
+          <div className="teemseo-tabs teemseo-tabs--sub" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={subTab === 'seo'}
+              className={subTab === 'seo' ? 'is-active' : ''}
+              onClick={() => setSubTab('seo')}
+            >
+              {t.seo}
+              {result && <ScoreBadge rating={result.seoScore} locale={locale} />}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={subTab === 'readability'}
+              className={subTab === 'readability' ? 'is-active' : ''}
+              onClick={() => setSubTab('readability')}
+            >
+              {t.readability}
+              {result && <ScoreBadge rating={result.readabilityScore} locale={locale} />}
+            </button>
+          </div>
+
+          <div role="tabpanel">
+            {loading && !result ? (
+              <p className="teemseo-empty">{t.loading}</p>
+            ) : subTab === 'seo' ? (
+              <AssessmentList items={result?.seo ?? []} empty={t.empty} />
+            ) : (
+              <AssessmentList items={result?.readability ?? []} empty={t.empty} />
+            )}
+          </div>
         </div>
-      </div>
+      ) : null}
 
-      {result && (
-        <div className="teemseo-stats">
-          <span>
-            {result.stats.wordCount} {t.words}
-          </span>
-          <span>
-            {t.density}: {result.stats.keyphraseDensity}%
-          </span>
+      {mainTab === 'schema' && editable ? (
+        <div className="teemseo-tabpanel" role="tabpanel">
+          <SchemaPanel
+            value={value!}
+            onChange={onChangeMeta!}
+            locale={locale}
+            readOnly={readOnly}
+            siteUrl={siteUrl}
+          />
         </div>
-      )}
+      ) : null}
 
-      <div className="teemseo-tabs" role="tablist">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={tab === 'seo'}
-          className={tab === 'seo' ? 'is-active' : ''}
-          onClick={() => setTab('seo')}
-        >
-          {t.seo}
-          {result && <ScoreBadge rating={result.seoScore} locale={locale} />}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={tab === 'readability'}
-          className={tab === 'readability' ? 'is-active' : ''}
-          onClick={() => setTab('readability')}
-        >
-          {t.readability}
-          {result && <ScoreBadge rating={result.readabilityScore} locale={locale} />}
-        </button>
-      </div>
-
-      <div className="teemseo-tabpanel" role="tabpanel">
-        {loading && !result ? (
-          <p className="teemseo-empty">{t.loading}</p>
-        ) : tab === 'seo' ? (
-          <AssessmentList items={result?.seo ?? []} empty={t.empty} />
-        ) : (
-          <AssessmentList items={result?.readability ?? []} empty={t.empty} />
-        )}
-      </div>
+      {mainTab === 'social' && editable ? (
+        <div className="teemseo-tabpanel" role="tabpanel">
+          <SocialPanel
+            value={value!}
+            onChange={onChangeMeta!}
+            locale={locale}
+            readOnly={readOnly}
+            siteUrl={siteUrl}
+            onUploadSocialImage={onUploadSocialImage}
+          />
+        </div>
+      ) : null}
     </div>
   )
 }

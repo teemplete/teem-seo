@@ -8,6 +8,9 @@ import type {
   Locale,
   LocaleOption,
   MetaFieldsValue,
+  SchemaType,
+  TwitterCardType,
+  UploadSocialImage,
 } from '../core/types'
 import { AnalysisPanel } from './components/AnalysisPanel'
 import { MetaFields } from './components/MetaFields'
@@ -65,11 +68,26 @@ export interface TeemSEOProps {
   noArchive?: boolean
   /** Meta robots: nosnippet */
   noSnippet?: boolean
+  /** schema.org `@type` for JSON-LD */
+  schemaType?: SchemaType
+  /** Open Graph / social share title */
+  socialTitle?: string
+  /** Open Graph / social share description */
+  socialDescription?: string
+  /** Open Graph / social share image URL */
+  socialImage?: string
+  /** Twitter / X card type */
+  twitterCard?: TwitterCardType
   /**
    * Host callback that returns related internal pages for the suggestions accordion.
    * Use `createInternalLinkSuggestionsFetcher(url)` to POST to an API.
    */
   getInternalLinkSuggestions?: GetInternalLinkSuggestions
+  /**
+   * Host callback to upload a social share image. Receives the selected `File`
+   * and must return the public URL to store in `socialImage`.
+   */
+  onUploadSocialImage?: UploadSocialImage
 }
 
 export function TeemSEO({
@@ -94,7 +112,13 @@ export function TeemSEO({
   noImageIndex,
   noArchive,
   noSnippet,
+  schemaType,
+  socialTitle,
+  socialDescription,
+  socialImage,
+  twitterCard,
   getInternalLinkSuggestions,
+  onUploadSocialImage,
 }: TeemSEOProps) {
   const [meta, setMeta] = useState<MetaFieldsValue>({
     focusKeyphrase,
@@ -109,6 +133,11 @@ export function TeemSEO({
     noImageIndex: noImageIndex ?? false,
     noArchive: noArchive ?? false,
     noSnippet: noSnippet ?? false,
+    schemaType: schemaType ?? 'Article',
+    socialTitle: socialTitle ?? '',
+    socialDescription: socialDescription ?? '',
+    socialImage: socialImage ?? '',
+    twitterCard: twitterCard ?? 'summary_large_image',
   })
 
   useEffect(() => {
@@ -126,6 +155,11 @@ export function TeemSEO({
       ...(noImageIndex !== undefined ? { noImageIndex } : {}),
       ...(noArchive !== undefined ? { noArchive } : {}),
       ...(noSnippet !== undefined ? { noSnippet } : {}),
+      ...(schemaType !== undefined ? { schemaType } : {}),
+      ...(socialTitle !== undefined ? { socialTitle } : {}),
+      ...(socialDescription !== undefined ? { socialDescription } : {}),
+      ...(socialImage !== undefined ? { socialImage } : {}),
+      ...(twitterCard !== undefined ? { twitterCard } : {}),
     }))
   }, [
     focusKeyphrase,
@@ -140,6 +174,11 @@ export function TeemSEO({
     noImageIndex,
     noArchive,
     noSnippet,
+    schemaType,
+    socialTitle,
+    socialDescription,
+    socialImage,
+    twitterCard,
   ])
 
   const { result, loading } = useTeemSEO({
@@ -206,7 +245,16 @@ export function TeemSEO({
         locale={uiLocale}
       />
 
-      <AnalysisPanel result={result} loading={loading} locale={uiLocale} />
+      <AnalysisPanel
+        result={result}
+        loading={loading}
+        locale={uiLocale}
+        value={meta}
+        onChangeMeta={handleMeta}
+        siteUrl={siteUrl}
+        readOnly={analysisOnly}
+        onUploadSocialImage={onUploadSocialImage}
+      />
 
       {!analysisOnly && (
         <SeoAccordions

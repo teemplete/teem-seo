@@ -41,6 +41,9 @@ export function buildMetadata(input: BuildMetadataInput) {
   const title = input.title ?? fromMeta?.title ?? ''
   const description = input.description ?? fromMeta?.metaDescription ?? ''
   const slug = input.slug ?? fromMeta?.slug ?? ''
+  const socialTitle = fromMeta?.socialTitle?.trim() || title
+  const socialDescription = fromMeta?.socialDescription?.trim() || description
+  const socialImage = fromMeta?.socialImage?.trim()
   const canonical =
     input.canonical ??
     (fromMeta?.canonicalUrl?.trim() || undefined) ??
@@ -54,6 +57,10 @@ export function buildMetadata(input: BuildMetadataInput) {
   const noarchive = input.robots?.noarchive ?? fromMeta?.noArchive ?? false
   const nosnippet = input.robots?.nosnippet ?? fromMeta?.noSnippet ?? false
 
+  const ogImages =
+    input.openGraph?.images ??
+    (socialImage ? [{ url: socialImage }] : undefined)
+
   return {
     title: title || undefined,
     description: description || undefined,
@@ -66,17 +73,18 @@ export function buildMetadata(input: BuildMetadataInput) {
       ...(nosnippet ? { nosnippet: true } : {}),
     },
     openGraph: {
-      title: title || undefined,
-      description: description || undefined,
+      title: socialTitle || undefined,
+      description: socialDescription || undefined,
       url: canonical,
       locale: input.locale === 'fa' ? 'fa_IR' : 'en_US',
       type: input.openGraph?.type ?? 'article',
-      images: input.openGraph?.images,
+      images: ogImages,
     },
     twitter: {
-      card: input.twitter?.card ?? 'summary_large_image',
-      title: title || undefined,
-      description: description || undefined,
+      card: input.twitter?.card ?? fromMeta?.twitterCard ?? 'summary_large_image',
+      title: socialTitle || undefined,
+      description: socialDescription || undefined,
+      images: socialImage ? [socialImage] : undefined,
       site: input.twitter?.site,
       creator: input.twitter?.creator,
     },

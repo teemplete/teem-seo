@@ -51,6 +51,11 @@ export default function App() {
     noImageIndex: false,
     noArchive: false,
     noSnippet: false,
+    schemaType: 'Article',
+    socialTitle: '',
+    socialDescription: '',
+    socialImage: '',
+    twitterCard: 'summary_large_image',
   })
 
   const switchLang = (next: 'en' | 'fa') => {
@@ -71,6 +76,11 @@ export default function App() {
         noImageIndex: false,
         noArchive: false,
         noSnippet: false,
+        schemaType: 'Article',
+        socialTitle: '',
+        socialDescription: '',
+        socialImage: '',
+        twitterCard: 'summary_large_image',
       })
     } else {
       setContent(EN_SAMPLE)
@@ -88,6 +98,11 @@ export default function App() {
         noImageIndex: false,
         noArchive: false,
         noSnippet: false,
+        schemaType: 'Article',
+        socialTitle: '',
+        socialDescription: '',
+        socialImage: '',
+        twitterCard: 'summary_large_image',
       })
     }
   }
@@ -102,6 +117,12 @@ export default function App() {
 
   const getInternalLinkSuggestions = useCallback(mockGetInternalLinkSuggestions, [])
 
+  /** Demo upload: turns the file into a blob URL (swap for your real API in production). */
+  const onUploadSocialImage = useCallback(async (file: File) => {
+    await new Promise((r) => setTimeout(r, 400))
+    return URL.createObjectURL(file)
+  }, [])
+
   const nextMetadata = useMemo(
     () =>
       buildMetadata({
@@ -115,12 +136,13 @@ export default function App() {
   const jsonLd = useMemo(
     () =>
       buildJsonLd({
-        type: 'Article',
+        type: meta.schemaType ?? 'Article',
         title: meta.title,
         description: meta.metaDescription,
         url:
           meta.canonicalUrl?.trim() ||
           `${SITE_URL}/${meta.slug.replace(/^\//, '')}`,
+        image: meta.socialImage?.trim() || undefined,
         locale: lang,
       }),
     [lang, meta],
@@ -240,11 +262,17 @@ export default function App() {
           noImageIndex={meta.noImageIndex}
           noArchive={meta.noArchive}
           noSnippet={meta.noSnippet}
+          schemaType={meta.schemaType}
+          socialTitle={meta.socialTitle}
+          socialDescription={meta.socialDescription}
+          socialImage={meta.socialImage}
+          twitterCard={meta.twitterCard}
           siteUrl={SITE_URL}
           locale={lang}
           onChangeMeta={setMeta}
           onAnalysis={setAnalysis}
           getInternalLinkSuggestions={getInternalLinkSuggestions}
+          onUploadSocialImage={onUploadSocialImage}
         />
       </main>
     </div>

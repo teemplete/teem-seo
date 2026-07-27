@@ -106,6 +106,23 @@ export interface AnalysisResult {
   }
 }
 
+/** schema.org `@type` options exposed in the Schema tab */
+export type SchemaType =
+  | 'WebPage'
+  | 'Article'
+  | 'NewsArticle'
+  | 'BlogPosting'
+  | 'FAQPage'
+  | 'HowTo'
+  | 'Product'
+  | 'ItemPage'
+  | 'CollectionPage'
+  | 'ProfilePage'
+  | 'AboutPage'
+  | 'ContactPage'
+
+export type TwitterCardType = 'summary' | 'summary_large_image'
+
 export interface MetaFieldsValue {
   focusKeyphrase: string
   title: string
@@ -127,6 +144,16 @@ export interface MetaFieldsValue {
   noArchive?: boolean
   /** Meta robots: nosnippet */
   noSnippet?: boolean
+  /** schema.org page type for JSON-LD */
+  schemaType?: SchemaType
+  /** Open Graph / social share title (falls back to SEO title) */
+  socialTitle?: string
+  /** Open Graph / social share description (falls back to meta description) */
+  socialDescription?: string
+  /** Open Graph / social share image URL */
+  socialImage?: string
+  /** Twitter / X card type */
+  twitterCard?: TwitterCardType
 }
 
 /** Query TeemSEO sends to the host for internal link suggestions */
@@ -154,3 +181,9 @@ export interface InternalLinkSuggestion {
 export type GetInternalLinkSuggestions = (
   query: InternalLinkQuery,
 ) => InternalLinkSuggestion[] | Promise<InternalLinkSuggestion[]>
+
+/**
+ * Host callback that uploads a social share image and returns its public URL.
+ * Wire this to your CMS / storage (S3, Cloudinary, Next.js API route, etc.).
+ */
+export type UploadSocialImage = (file: File) => string | Promise<string>

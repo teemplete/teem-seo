@@ -34,6 +34,9 @@ export type {
   ParsedContent,
   ProminentWord,
   Rating,
+  SchemaType,
+  TwitterCardType,
+  UploadSocialImage,
 } from './core'
 
 // React UI — for Next.js App Router prefer `import { TeemSEO } from 'teemseo/react'`

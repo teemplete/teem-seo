@@ -11,6 +11,9 @@ export type {
   MetaFieldsValue,
   ParsedContent,
   Rating,
+  SchemaType,
+  TwitterCardType,
+  UploadSocialImage,
 } from './types'
 
 export { analyze, analyzeSync } from './analyze'

@@ -68,4 +68,37 @@ describe('buildJsonLd', () => {
     expect(json.inLanguage).toBe('fa-IR')
     expect((json.author as { name: string }).name).toBe('Erfan')
   })
+
+  it('accepts FAQPage schema type', () => {
+    const json = buildJsonLd({
+      type: 'FAQPage',
+      title: 'FAQ',
+      description: 'Answers',
+    })
+    expect(json['@type']).toBe('FAQPage')
+  })
+})
+
+describe('social meta', () => {
+  it('prefers social title description and image for OG/Twitter', () => {
+    const meta = buildMetadata({
+      from: {
+        focusKeyphrase: 'x',
+        title: 'SEO title',
+        metaDescription: 'SEO desc',
+        slug: 's',
+        socialTitle: 'Share title',
+        socialDescription: 'Share desc',
+        socialImage: 'https://cdn.example.com/og.jpg',
+        twitterCard: 'summary',
+      },
+      siteUrl: 'https://example.com',
+    })
+    expect(meta.openGraph?.title).toBe('Share title')
+    expect(meta.openGraph?.description).toBe('Share desc')
+    expect(meta.openGraph?.images).toEqual([{ url: 'https://cdn.example.com/og.jpg' }])
+    expect(meta.twitter?.card).toBe('summary')
+    expect(meta.twitter?.title).toBe('Share title')
+    expect(meta.twitter?.images).toEqual(['https://cdn.example.com/og.jpg'])
+  })
 })

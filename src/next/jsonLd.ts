@@ -1,4 +1,6 @@
-export type JsonLdType = 'Article' | 'WebPage' | 'BlogPosting'
+import type { SchemaType } from '../core/types'
+
+export type JsonLdType = SchemaType
 
 export interface BuildJsonLdInput {
   type?: JsonLdType
