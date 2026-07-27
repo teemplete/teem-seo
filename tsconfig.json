@@ -17,8 +17,8 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "teemseo": ["./src/index.ts"],
-      "teemseo/*": ["./src/*"]
+      "teem-seo": ["./src/index.ts"],
+      "teem-seo/*": ["./src/*"]
     }
   },
   "include": ["src", "tests"],

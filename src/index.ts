@@ -39,7 +39,7 @@ export type {
   UploadSocialImage,
 } from './core'
 
-// React UI — for Next.js App Router prefer `import { TeemSEO } from 'teemseo/react'`
+// React UI — for Next.js App Router prefer `import { TeemSEO } from 'teem-seo/react'`
 export { TeemSEO } from './react/TeemSEO'
 export type { TeemSEOProps } from './react/TeemSEO'
 export { useTeemSEO } from './react/useTeemSEO'

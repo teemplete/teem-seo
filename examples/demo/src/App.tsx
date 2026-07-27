@@ -3,9 +3,9 @@ import {
   TeemSEO,
   type AnalysisResult,
   type MetaFieldsValue,
-} from 'teemseo'
-import { buildJsonLd, buildMetadata } from 'teemseo/next'
-import 'teemseo/styles.css'
+} from 'teem-seo'
+import { buildJsonLd, buildMetadata } from 'teem-seo/next'
+import 'teem-seo/styles.css'
 import { mockGetInternalLinkSuggestions } from './mockInternalLinks'
 
 type OutputTab = 'meta' | 'analysis' | 'metadata' | 'jsonld'

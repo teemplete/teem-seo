@@ -1,7 +1,7 @@
 import type {
   GetInternalLinkSuggestions,
   InternalLinkQuery,
-} from 'teemseo'
+} from 'teem-seo'
 
 interface CatalogPage {
   title: string

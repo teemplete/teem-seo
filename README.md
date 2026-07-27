@@ -2,6 +2,8 @@
 
 Yoast-like SEO and readability analysis for **React** and **Next.js**, with full **English** and **Persian (فارسی)** support.
 
+![TeemSEO sidebar — focus keyphrase, meta fields, and Google SERP preview](docs/teemseo-sidebar.png)
+
 TeemSEO analyzes content against a focus keyphrase, meta fields, structure, links, and readability — then shows traffic-light feedback (`good` / `ok` / `bad`). Use the full UI sidebar, headless analysis only, or compose your own UI from exported hooks and components.
 
 ## Table of contents
@@ -20,7 +22,7 @@ TeemSEO analyzes content against a focus keyphrase, meta fields, structure, link
 - [What it checks](#what-it-checks)
 - [Props reference](#props-reference)
 - [Core utilities](#core-utilities)
-- [Custom UI (`teemseo/react`)](#custom-ui-teemseoreact)
+- [Custom UI (`teem-seo/react`)](#custom-ui-teem-seoreact)
 - [Styling](#styling)
 - [Integration patterns](#integration-patterns)
 - [Local demo](#local-demo)
@@ -40,49 +42,49 @@ TeemSEO analyzes content against a focus keyphrase, meta fields, structure, link
 
 - **Node.js** ≥ 18
 - **React** ≥ 18 (optional — only for UI)
-- **Next.js** ≥ 13 (optional — only for `teemseo/next` helpers)
+- **Next.js** ≥ 13 (optional — only for `teem-seo/next` helpers)
 
 Peer dependencies are optional in `package.json`; install `react` / `react-dom` when using the UI, and `next` when using metadata/JSON-LD helpers.
 
 ## Install
 
 ```bash
-npm install teemseo
+npm install teem-seo
 # or
-pnpm add teemseo
+pnpm add teem-seo
 # or
-yarn add teemseo
+yarn add teem-seo
 ```
 
 Import styles once wherever you render `<TeemSEO />`:
 
 ```ts
-import 'teemseo/styles.css'
+import 'teem-seo/styles.css'
 ```
 
 ## Package entry points
 
 | Import | When to use |
 |--------|-------------|
-| `teemseo` | Default — core analysis + React UI re-exported |
-| `teemseo/react` | **Recommended in Next.js App Router** — client components only (`'use client'`) |
-| `teemseo/next` | `buildMetadata`, `buildJsonLd` for Next.js metadata / structured data |
-| `teemseo/styles.css` | Default sidebar styles |
+| `teem-seo` | Default — core analysis + React UI re-exported |
+| `teem-seo/react` | **Recommended in Next.js App Router** — client components only (`'use client'`) |
+| `teem-seo/next` | `buildMetadata`, `buildJsonLd` for Next.js metadata / structured data |
+| `teem-seo/styles.css` | Default sidebar styles |
 
 ```ts
 // Vite / CRA / Pages Router — either works
-import { TeemSEO, analyzeSync } from 'teemseo'
+import { TeemSEO, analyzeSync } from 'teem-seo'
 
 // Next.js App Router — prefer the react entry in Client Components
-import { TeemSEO } from 'teemseo/react'
-import { buildMetadata } from 'teemseo/next'
+import { TeemSEO } from 'teem-seo/react'
+import { buildMetadata } from 'teem-seo/next'
 ```
 
 ## Quick start (React)
 
 ```tsx
-import { TeemSEO } from 'teemseo'
-import 'teemseo/styles.css'
+import { TeemSEO } from 'teem-seo'
+import 'teem-seo/styles.css'
 
 export function EditorSidebar({ html }: { html: string }) {
   return (
@@ -113,8 +115,8 @@ Split server metadata from client analysis:
 // app/blog/[slug]/edit/page.tsx
 'use client'
 
-import { TeemSEO } from 'teemseo/react'
-import 'teemseo/styles.css'
+import { TeemSEO } from 'teem-seo/react'
+import 'teem-seo/styles.css'
 
 export default function EditPage({ html }: { html: string }) {
   return (
@@ -130,7 +132,7 @@ export default function EditPage({ html }: { html: string }) {
 
 ```ts
 // app/blog/[slug]/page.tsx
-import { buildMetadata, buildJsonLd, jsonLdScriptContent } from 'teemseo/next'
+import { buildMetadata, buildJsonLd, jsonLdScriptContent } from 'teem-seo/next'
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const post = await getPost(params.slug)
@@ -173,7 +175,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 No UI — use in APIs, workers, or custom dashboards:
 
 ```ts
-import { analyze, analyzeSync } from 'teemseo'
+import { analyze, analyzeSync } from 'teem-seo'
 
 const result = analyzeSync({
   content: '<h1>سلام</h1><p>این متن درباره سئو محتوا است...</p>',
@@ -268,8 +270,8 @@ interface InternalLinkSuggestion {
 ### Callback (recommended)
 
 ```tsx
-import { TeemSEO, type GetInternalLinkSuggestions } from 'teemseo'
-import 'teemseo/styles.css'
+import { TeemSEO, type GetInternalLinkSuggestions } from 'teem-seo'
+import 'teem-seo/styles.css'
 
 const getInternalLinkSuggestions: GetInternalLinkSuggestions = async (query) => {
   const res = await fetch('/api/internal-links', {
@@ -293,7 +295,7 @@ const getInternalLinkSuggestions: GetInternalLinkSuggestions = async (query) => 
 If your API accepts `POST` JSON and responds with `{ suggestions: [...] }`:
 
 ```tsx
-import { TeemSEO, createInternalLinkSuggestionsFetcher } from 'teemseo'
+import { TeemSEO, createInternalLinkSuggestionsFetcher } from 'teem-seo'
 
 <TeemSEO
   content={html}
@@ -335,7 +337,7 @@ The `keyphraseInSlug` assessment uses smart matching for Persian content:
 Use the helpers directly if you build your own slug UI:
 
 ```ts
-import { keyphraseMatchesSlug, slugifyKeyphrase, hasArabicScript } from 'teemseo'
+import { keyphraseMatchesSlug, slugifyKeyphrase, hasArabicScript } from 'teem-seo'
 
 keyphraseMatchesSlug('سئو محتوا', 'seo-mohtava') // true
 slugifyKeyphrase('سئو محتوا')                    // 'سئو-محتوا'
@@ -469,7 +471,7 @@ Returns `{ result: AnalysisResult | null, loading: boolean }`.
 | `enabled` | `boolean` | — | When `false`, no request (e.g. accordion closed). |
 | `getInternalLinkSuggestions` | `GetInternalLinkSuggestions` | — | Host fetcher / callback. |
 
-### `buildMetadata` (`teemseo/next`)
+### `buildMetadata` (`teem-seo/next`)
 
 | Prop | Type | Description |
 |------|------|-------------|
@@ -484,7 +486,7 @@ Returns `{ result: AnalysisResult | null, loading: boolean }`.
 | `from` | `Partial<MetaFieldsValue> \| AnalysisResult` | Prefill title/description/slug/robots/canonical from editor state or analysis. |
 | `robots` | `{ index?, follow?, noimageindex?, noarchive?, nosnippet? }` | Robots overrides (defaults from `from.allowIndex` / `from.allowFollow` / advanced flags). |
 
-### `buildJsonLd` / `jsonLdScriptContent` (`teemseo/next`)
+### `buildJsonLd` / `jsonLdScriptContent` (`teem-seo/next`)
 
 | Prop | Type | Description |
 |------|------|-------------|
@@ -505,7 +507,7 @@ Returns `{ result: AnalysisResult | null, loading: boolean }`.
 
 ## Core utilities
 
-Exported from `teemseo` for custom pipelines:
+Exported from `teem-seo` for custom pipelines:
 
 | Function | Purpose |
 |----------|---------|
@@ -525,7 +527,7 @@ Exported from `teemseo` for custom pipelines:
 | `overallFrom(seo, readability)` | Combined overall score |
 | `fleschReadingEase(text)` | English Flesch score (0–100+) |
 
-## Custom UI (`teemseo/react`)
+## Custom UI (`teem-seo/react`)
 
 Build your own layout with the same pieces TeemSEO uses internally:
 
@@ -539,8 +541,8 @@ import {
   MetaFields,
   SeoAccordions,
   ScoreBadge,
-} from 'teemseo/react'
-import 'teemseo/styles.css'
+} from 'teem-seo/react'
+import 'teem-seo/styles.css'
 
 export function MySeoPanel({ content, meta, onChangeMeta }) {
   const { result, loading } = useTeemSEO({
@@ -566,7 +568,7 @@ Also exported: `Accordion`, `ScoreLight`.
 
 ## Styling
 
-Import `teemseo/styles.css`. All styles are scoped under `.teemseo` and use CSS variables you can override:
+Import `teem-seo/styles.css`. All styles are scoped under `.teemseo` and use CSS variables you can override:
 
 ```css
 .teemseo {
@@ -610,7 +612,7 @@ Show scores without editable fields (e.g. preview mode):
 ### Server-side gate before publish
 
 ```ts
-import { analyzeSync } from 'teemseo'
+import { analyzeSync } from 'teem-seo'
 
 const result = analyzeSync({ content, focusKeyphrase, title, metaDescription, slug, siteUrl })
 const blockers = result.seo.filter((a) => a.rating === 'bad')
