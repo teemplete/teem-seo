@@ -43,6 +43,8 @@ export const faPack: LanguagePack = {
       keyphraseInAltOk: 'تصویر وجود دارد اما کلمه کلیدی در alt نیست.',
       keyphraseInAltBad: 'تصویری یافت نشد. تصاویر با alt توصیفی و شامل کلمه کلیدی اضافه کنید.',
       keyphraseInSlugGood: 'کلمه کلیدی در نامک (slug) وجود دارد.',
+      keyphraseInSlugOk:
+        'نامک لاتین است. برای کلمات کلیدی فارسی این روش رایج و قابل‌قبول است؛ ترجیحاً معادل انگلیسی یا نویسه‌گردانی کلمه کلیدی را در نامک بیاورید.',
       keyphraseInSlugBad: 'کلمه کلیدی در نامک (slug) وجود ندارد.',
       titleLengthGood: 'طول عنوان SEO مناسب است.',
       titleLengthShort: 'عنوان SEO خیلی کوتاه است. حدود ۳۰ تا ۶۰ کاراکتر هدف بگیرید.',

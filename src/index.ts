@@ -4,6 +4,8 @@ export {
   parseContent,
   normalizeKeyphrase,
   slugifyKeyphrase,
+  keyphraseMatchesSlug,
+  hasArabicScript,
   getProminentWords,
   buildInternalLinkQuery,
   createInternalLinkSuggestionsFetcher,

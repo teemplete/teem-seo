@@ -1,6 +1,6 @@
 {
   "name": "teemseo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Yoast-like SEO and readability analysis for React and Next.js — English & Persian",
   "license": "MIT",
   "author": "TeemSEO",

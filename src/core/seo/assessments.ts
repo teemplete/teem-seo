@@ -4,8 +4,12 @@ import {
   countKeyphraseOccurrences,
   estimateTitleWidth,
   normalizeKeyphrase,
-  slugifyKeyphrase,
 } from '../parseContent'
+import {
+  hasArabicScript,
+  isAcceptableLatinizedPersianSlug,
+  keyphraseMatchesSlug,
+} from '../persianSlug'
 import { result } from '../scoring'
 import type { AssessmentResult, ParsedContent } from '../types'
 
@@ -152,15 +156,16 @@ export function assessKeyphraseInSlug(ctx: SeoContext): AssessmentResult {
   if (!ctx.focusKeyphrase.trim()) {
     return result({ id: 'keyphraseInSlug', rating: 'bad', text: m.keyphraseMissing })
   }
-  const slug = ctx.slug.toLowerCase()
-  const slugified = slugifyKeyphrase(ctx.focusKeyphrase)
-  const words = normalizeKeyphrase(ctx.focusKeyphrase).split(/\s+/).filter(Boolean)
-  const hit =
-    (slugified && slug.includes(slugified)) ||
-    words.every((w) => slug.includes(w.replace(/[^\p{L}\p{N}-]/gu, '')))
-
-  if (hit) {
+  if (keyphraseMatchesSlug(ctx.focusKeyphrase, ctx.slug)) {
     return result({ id: 'keyphraseInSlug', rating: 'good', text: m.keyphraseInSlugGood })
+  }
+  // Persian keyphrases commonly use English/romanized slugs — never mark as bad when a slug exists.
+  if (isAcceptableLatinizedPersianSlug(ctx.focusKeyphrase, ctx.slug)) {
+    return result({ id: 'keyphraseInSlug', rating: 'ok', text: m.keyphraseInSlugOk })
+  }
+  // Empty slug with a Persian keyphrase: soft warning only (same common practice).
+  if (hasArabicScript(ctx.focusKeyphrase)) {
+    return result({ id: 'keyphraseInSlug', rating: 'ok', text: m.keyphraseInSlugOk })
   }
   return result({ id: 'keyphraseInSlug', rating: 'bad', text: m.keyphraseInSlugBad })
 }

@@ -17,26 +17,45 @@ import { SnippetPreview } from './components/SnippetPreview'
 import { useTeemSEO } from './useTeemSEO'
 
 export interface TeemSEOProps {
+  /** HTML or plain-text content to analyze */
   content: string
+  /** Focus keyphrase for SEO assessments */
   focusKeyphrase?: string
+  /** SEO / SERP title */
   title?: string
+  /** Meta description */
   metaDescription?: string
+  /** URL slug (path segment without leading slash) */
   slug?: string
+  /**
+   * Site origin (e.g. `https://example.com`).
+   * Used to classify internal vs outbound links: `/path` is always internal;
+   * full URLs on this host (e.g. `https://example.com/path`) count as internal too.
+   * Also shown in the SERP snippet preview.
+   */
   siteUrl?: string
+  /** Content language: `'en'` | `'fa'` | `'auto'` (detect from text) */
   locale?: LocaleOption
+  /** Override UI / assessment message language independently of content locale */
   messageLocale?: Locale
+  /** Extra class name on the root `<aside>` */
   className?: string
-  /** Controlled meta fields change */
+  /** Called when editable meta fields change */
   onChangeMeta?: (value: MetaFieldsValue) => void
+  /** Called whenever a new analysis result is ready */
   onAnalysis?: (result: AnalysisResult) => void
+  /** Return `true` if the keyphrase is already used on another page */
   isKeyphraseUsedElsewhere?: AnalyzeInput['isKeyphraseUsedElsewhere']
   /** Hide editable fields and only show analysis + snippet */
   analysisOnly?: boolean
+  /** Mark this page as cornerstone content */
   isCornerstone?: boolean
+  /** Allow search engines to index this page (default `true`) */
   allowIndex?: boolean
+  /** Allow search engines to follow links (default `true`) */
   allowFollow?: boolean
   /**
-   * Host callback that returns related internal pages.
+   * Host callback that returns related internal pages for the suggestions accordion.
    * Use `createInternalLinkSuggestionsFetcher(url)` to POST to an API.
    */
   getInternalLinkSuggestions?: GetInternalLinkSuggestions

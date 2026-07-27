@@ -32,6 +32,7 @@ export interface MessagePack {
     keyphraseInAltOk: string
     keyphraseInAltBad: string
     keyphraseInSlugGood: string
+    keyphraseInSlugOk: string
     keyphraseInSlugBad: string
     titleLengthGood: string
     titleLengthShort: string
@@ -134,6 +135,8 @@ export const enPack: LanguagePack = {
       keyphraseInAltOk: 'Images are present but the focus keyphrase is missing from alt attributes.',
       keyphraseInAltBad: 'No images found. Add images with descriptive alt text including the keyphrase.',
       keyphraseInSlugGood: 'The focus keyphrase appears in the slug.',
+      keyphraseInSlugOk:
+        'The slug is Latinized. For non-Latin keyphrases this is acceptable if it reflects the topic (e.g. romanization or English equivalent).',
       keyphraseInSlugBad: 'The focus keyphrase does not appear in the slug.',
       titleLengthGood: 'The SEO title has a good length.',
       titleLengthShort: 'The SEO title is too short. Aim for about 30–60 characters.',

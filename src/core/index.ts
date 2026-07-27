@@ -15,6 +15,7 @@ export type {
 
 export { analyze, analyzeSync } from './analyze'
 export { parseContent, normalizeKeyphrase, slugifyKeyphrase } from './parseContent'
+export { keyphraseMatchesSlug, hasArabicScript } from './persianSlug'
 export { getProminentWords } from './prominentWords'
 export type { ProminentWord } from './prominentWords'
 export {

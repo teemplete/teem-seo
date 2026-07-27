@@ -45,7 +45,11 @@ export interface AnalyzeInput {
   title?: string
   metaDescription?: string
   slug?: string
-  /** Site origin used to classify internal vs outbound links */
+  /**
+   * Site origin (e.g. `https://example.com`) used to classify links.
+   * Root-relative paths (`/blog`) are always internal. Absolute or
+   * protocol-relative URLs whose hostname matches this origin are internal too.
+   */
   siteUrl?: string
   locale?: LocaleOption
   /** Return true if this keyphrase is already used on another page */

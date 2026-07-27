@@ -46,6 +46,38 @@ describe('parseContent', () => {
     expect(parsed.links.some((l) => !l.isInternal)).toBe(true)
     expect(parsed.wordCount).toBeGreaterThan(50)
   })
+
+  it('treats bare-domain hrefs as outbound links', () => {
+    const html = '<a href="google.com">Google</a><a href="/test">Test</a>'
+    const parsed = parseContent(html, { siteUrl: 'https://example.com' })
+    const google = parsed.links.find((l) => l.href === 'google.com')
+    const test = parsed.links.find((l) => l.href === '/test')
+    expect(google?.isInternal).toBe(false)
+    expect(test?.isInternal).toBe(true)
+  })
+
+  it('treats protocol-relative and absolute external links as outbound', () => {
+    const html =
+      '<a href="//google.com">G</a><a href="https://developers.google.com/search">Docs</a>'
+    const parsed = parseContent(html, { siteUrl: 'https://example.com' })
+    expect(parsed.links.every((l) => !l.isInternal)).toBe(true)
+  })
+
+  it('treats root-relative and same-origin absolute links as internal when siteUrl is set', () => {
+    const html = `
+      <a href="/blog/seo">Relative</a>
+      <a href="https://example.com/blog/seo">Absolute same site</a>
+      <a href="//example.com/about">Protocol relative same site</a>
+      <a href="https://other.com/x">External</a>
+    `
+    const parsed = parseContent(html, { siteUrl: 'https://example.com' })
+    expect(parsed.links.find((l) => l.href === '/blog/seo')?.isInternal).toBe(true)
+    expect(
+      parsed.links.find((l) => l.href === 'https://example.com/blog/seo')?.isInternal,
+    ).toBe(true)
+    expect(parsed.links.find((l) => l.href === '//example.com/about')?.isInternal).toBe(true)
+    expect(parsed.links.find((l) => l.href === 'https://other.com/x')?.isInternal).toBe(false)
+  })
 })
 
 describe('analyzeSync', () => {
@@ -83,6 +115,7 @@ describe('analyzeSync', () => {
 
     expect(result.locale).toBe('fa')
     expect(result.seo.find((a) => a.id === 'keyphraseInContent')?.rating).toBe('good')
+    expect(result.seo.find((a) => a.id === 'keyphraseInSlug')?.rating).toBe('good')
     expect(result.readability.some((a) => a.id === 'persianReadability')).toBe(true)
     expect(result.readability.some((a) => a.id === 'fleschReadingEase')).toBe(false)
     expect(result.messageLocale).toBe('fa')

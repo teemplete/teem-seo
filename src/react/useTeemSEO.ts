@@ -10,6 +10,7 @@ export interface UseTeemSEOOptions {
   title?: string
   metaDescription?: string
   slug?: string
+  /** Site origin for internal vs outbound link classification and snippet host */
   siteUrl?: string
   locale?: LocaleOption
   messageLocale?: AnalyzeInput['messageLocale']

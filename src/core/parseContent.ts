@@ -66,20 +66,51 @@ function extractImages(html: string): ParsedImage[] {
   return images
 }
 
+function looksLikeBareDomain(href: string): boolean {
+  if (!href || href.startsWith('.') || href.startsWith('#')) return false
+  if (href.startsWith('/') && !href.startsWith('//')) return false
+  const pathPart = href.split(/[?#]/)[0] ?? ''
+  if (!pathPart.includes('/') && /\.(html?|php|asp|aspx|jsp)$/i.test(pathPart)) return false
+  try {
+    const parsed = new URL(/^https?:\/\//i.test(href) ? href : `https://${href}`)
+    return parsed.hostname.includes('.')
+  } catch {
+    return false
+  }
+}
+
 function isInternalHref(href: string, siteUrl?: string): boolean {
   if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) {
     return true
   }
   if (href.startsWith('/') && !href.startsWith('//')) return true
-  if (!siteUrl) {
-    return !/^https?:\/\//i.test(href)
+
+  const absolute = /^https?:\/\//i.test(href)
+  const protocolRelative = href.startsWith('//')
+  const bareDomain = !absolute && !protocolRelative && looksLikeBareDomain(href)
+
+  if (protocolRelative || absolute || bareDomain) {
+    if (!siteUrl) return false
+    try {
+      const base = new URL(siteUrl)
+      const resolved = protocolRelative
+        ? new URL(`https:${href}`)
+        : bareDomain
+          ? new URL(`https://${href}`)
+          : new URL(href)
+      return resolved.hostname === base.hostname
+    } catch {
+      return false
+    }
   }
+
+  if (!siteUrl) return true
   try {
     const base = new URL(siteUrl)
     const target = new URL(href, siteUrl)
     return target.hostname === base.hostname
   } catch {
-    return !/^https?:\/\//i.test(href)
+    return true
   }
 }
 

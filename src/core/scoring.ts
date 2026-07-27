@@ -16,18 +16,20 @@ export function result(partial: Omit<AssessmentResult, 'score'> & { score?: numb
 export function aggregateRating(results: AssessmentResult[]): Rating {
   if (results.length === 0) return 'ok'
   const bad = results.filter((r) => r.rating === 'bad').length
-  const ok = results.filter((r) => r.rating === 'ok').length
   const good = results.filter((r) => r.rating === 'good').length
   const avg =
     results.reduce((sum, r) => sum + RATING_ORDER[r.rating], 0) / results.length
 
-  if (bad >= Math.ceil(results.length * 0.35) || avg < 0.85) return 'bad'
-  if (ok > 0 || avg < 1.7 || good < results.length) {
-    if (avg >= 1.6 && bad === 0) return 'good'
-    if (avg >= 1.15) return 'ok'
-    return 'bad'
-  }
-  return 'good'
+  // Strong pass: no red lights and mostly green
+  if (bad === 0 && (good === results.length || avg >= 1.6)) return 'good'
+
+  // One or two red lights are forgivable — keep overall at ok, not bad
+  if (bad <= 2 && avg >= 1.0) return 'ok'
+
+  // Widespread problems
+  if (bad >= 3 || bad >= Math.ceil(results.length * 0.35) || avg < 0.85) return 'bad'
+  if (avg >= 1.15) return 'ok'
+  return 'bad'
 }
 
 export function overallFrom(seo: Rating, readability: Rating): Rating {
