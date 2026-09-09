@@ -849,11 +849,11 @@
 }
 
 .teemseo[dir="rtl"] .teemseo-accordion__chevron {
-  transform: rotate(135deg);
+  transform: rotate(45deg);
 }
 
 .teemseo[dir="rtl"] .teemseo-accordion.is-open .teemseo-accordion__chevron {
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
 }
 
 .teemseo-accordion__panel {
@@ -871,7 +871,7 @@
 
 .teemseo-check {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   cursor: pointer;
   font-size: 12px;
@@ -879,7 +879,9 @@
 }
 
 .teemseo-check input {
-  margin-top: 2px;
+  margin: 0;
+  width: 1em;
+  height: 1em;
   accent-color: var(--teemseo-accent);
   flex: 0 0 auto;
 }
