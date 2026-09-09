@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { analyzeSync, detectLocale, parseContent } from '../src/core'
+import { analyzeSync, detectLocale, getLanguagePack, parseContent } from '../src/core'
+import { runSeoAssessments } from '../src/core/seo/assessments'
 
 const EN_HTML = `
 <h1>Complete guide to content SEO</h1>
@@ -128,5 +129,54 @@ describe('analyzeSync', () => {
       locale: 'en',
     })
     expect(result.seo.find((a) => a.id === 'keyphraseLength')?.rating).toBe('bad')
+  })
+
+  it('shows keyphraseMissing only once when focus keyphrase is empty', () => {
+    const pack = getLanguagePack('en')
+    const content = parseContent('<p>Some content for analysis.</p>')
+    const ctx = {
+      content,
+      focusKeyphrase: '',
+      title: 'Test title',
+      metaDescription: 'A meta description that is long enough for testing purposes here.',
+      slug: 'test-slug',
+      pack,
+    }
+
+    const results = runSeoAssessments(ctx)
+    const missing = results.filter((r) => r.text === pack.messages.seo.keyphraseMissing)
+
+    expect(missing).toHaveLength(1)
+    expect(missing[0]?.id).toBe('keyphraseLength')
+    expect(results.map((r) => r.id)).not.toContain('keyphraseInTitle')
+    expect(results.map((r) => r.id)).not.toContain('keyphraseDensity')
+  })
+
+  it('runs all keyphrase checks when focus keyphrase is set', () => {
+    const result = analyzeSync({
+      content: EN_HTML,
+      focusKeyphrase: 'content SEO',
+      title: 'Complete guide to content SEO tips',
+      metaDescription:
+        'Learn content SEO with practical tactics for titles, meta descriptions, headings, and readable copy that ranks.',
+      slug: 'content-seo-guide',
+      locale: 'en',
+    })
+
+    const keyphraseIds = [
+      'keyphraseLength',
+      'keyphraseInTitle',
+      'keyphraseInMetaDescription',
+      'keyphraseInIntroduction',
+      'keyphraseInContent',
+      'keyphraseDensity',
+      'keyphraseInSubheadings',
+      'keyphraseInImageAlt',
+      'keyphraseInSlug',
+    ]
+
+    for (const id of keyphraseIds) {
+      expect(result.seo.map((r) => r.id)).toContain(id)
+    }
   })
 })

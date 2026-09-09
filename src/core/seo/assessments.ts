@@ -331,17 +331,23 @@ export function assessKeyphraseElsewhere(ctx: SeoContext): AssessmentResult | nu
   })
 }
 
+function hasKeyphrase(ctx: SeoContext): boolean {
+  return ctx.focusKeyphrase.trim().length > 0
+}
+
 export function runSeoAssessments(ctx: SeoContext): AssessmentResult[] {
+  const hasKp = hasKeyphrase(ctx)
+
   const assessments = [
     assessKeyphraseLength(ctx),
-    assessKeyphraseInTitle(ctx),
-    assessKeyphraseInMeta(ctx),
-    assessKeyphraseInIntroduction(ctx),
-    assessKeyphraseInContent(ctx),
-    assessKeyphraseDensity(ctx),
-    assessKeyphraseInSubheadings(ctx),
-    assessKeyphraseInImageAlt(ctx),
-    assessKeyphraseInSlug(ctx),
+    hasKp ? assessKeyphraseInTitle(ctx) : null,
+    hasKp ? assessKeyphraseInMeta(ctx) : null,
+    hasKp ? assessKeyphraseInIntroduction(ctx) : null,
+    hasKp ? assessKeyphraseInContent(ctx) : null,
+    hasKp ? assessKeyphraseDensity(ctx) : null,
+    hasKp ? assessKeyphraseInSubheadings(ctx) : null,
+    hasKp ? assessKeyphraseInImageAlt(ctx) : null,
+    hasKp ? assessKeyphraseInSlug(ctx) : null,
     assessTitleLength(ctx),
     assessMetaDescriptionLength(ctx),
     assessTextLength(ctx),
