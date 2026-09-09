@@ -1,6 +1,6 @@
 {
   "name": "teem-seo",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Yoast-like SEO and readability analysis for React and Next.js — English & Persian",
   "keywords": [
     "seo",
